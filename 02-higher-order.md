@@ -1,5 +1,11 @@
 # Higher-order functions
 
+## Lesson objectives:
+
+- Start from what is already familiar.
+- Know the names of the common higher-order function abstractions.
+- Understand partial application and Currying.
+
 ## Reduce
 
 Starting from somewhere familiar.
@@ -8,19 +14,35 @@ In Haskellish pseudocode:
 ```
 reduce(f, [], accumulator) = accumulator
 reduce(f, [x], accumulator) = f(x, accumulator)
-reduce(f, [x] + list, accumulator) = reduce(f, list, f(x, accumulator))
+reduce(f, [x] + rest_of_list, accumulator) = reduce(f, rest_of_list, f(x, accumulator))
 ```
 
 An inefficient pseudoimplementation in Python:
 
 ```python
-def reduce(f, list, accumulator):
-    if list == []:
+def reduce(f, li, accumulator):
+    if is_empty(li):
         return accumulator
-    else:
-        new_accumulator = f(list[0], accumulator)
-        return reduce(f, list[1:], new_accumulator)
+    new_accumulator = f(li[0], accumulator)
+    return reduce(f, li[1:], new_accumulator)
 ```
+
+Where a nice Pythonic way to check for an empty list is:
+
+```py
+def is_empty(li):
+    return not len(li)
+```
+
+<details><summary>Type signature, if you like that sort of thing...</summary>
+
+```python
+T, R = TypeVar("T"), TypeVar("R")
+def reduce(f: Callable[[T, R] T], li: list[T], accumulator: R) -> R:
+    ...
+```
+
+</details>
 
 Different languages have conventions for the order of arguments.
 
@@ -59,4 +81,51 @@ reduce(lambda a, b: a if a > b else b, list, 0)
 reduce(lambda l, x: l + [x] if f(x) else acc, list, [])
 ```
 
-## Currying
+<details>
+
+```python
+def is_even(x: ):
+    return x % 2 == 0
+
+T = TypeVar("T")
+def filter(f: Callable[[T], bool], li: list[T]) -> list[T]:
+    return reduce(lambda l, x: l + [x] if f(x) else acc, li, [])
+
+numbers = list(range(1,101))
+print(filter(is_even, numbers))
+```
+
+</details>
+
+## Map
+
+Haskellish pseudocode:
+
+```
+map(f, []) = []
+map(f, [x]) = [f(x)]
+map(f, [x] + rest_of_list) = [f(x)] + map(f, rest_of_list))
+```
+
+Python implementation:
+
+```py
+def map(f, li):
+    if not len(li):
+        return li
+    return [f(li[0])] + map(f, li[1:])
+```
+
+Though you're probably already familiar with `map` as it lives in the standard library.
+
+> [!NOTE]
+> For non-Pythonistas, the builtin `map` doesn't return a list, but a more general `map object`. You can force this to become a list -- if you like.
+>
+> ```py
+> squares = map(lambda x: x**2, range(1,101))
+> print(type(squares))
+> squares = list(squares)
+> print(type(squares))
+> ```
+
+## Partial application and Currying

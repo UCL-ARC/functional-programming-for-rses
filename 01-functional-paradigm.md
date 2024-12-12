@@ -29,6 +29,7 @@
   1.  Pure functions.
   2.  Immutable data structures.
   3.  Side-effect code bridge.
+- λ.
 
 ## Object-orientated programming
 
@@ -167,3 +168,47 @@ A function is pure if it takes input and gives output, and has no other effect, 
 ### Immutable data structures
 
 ### Side-effect free - side-effectful bridge
+
+## λ
+
+In the following examples, we'll be using the λ notation.
+This is conventionally used for an _anonymous function_.
+
+In many programming languages, _values_ can be anonymous (not assigned to a name).
+
+```py
+print(5) # 5 is an anonymous value
+```
+
+λ is simply a function without a name.
+Confusingly, we can also assign a name (in Python, at least).
+But the point is, we don't have to.
+The Python syntax is:
+
+```py
+lambda x: expression
+```
+
+So, for example:
+
+```py
+square = lambda x: x**2
+pow = lambda x, p: x**p
+```
+
+Those are equivalent to:
+
+```py
+def square(x):
+   return x**2
+
+def pow(x, p):
+   return x**p
+```
+
+Note that these are _good_ examples of λ functions (short, readable) but bad code examples because we've assigned them names.
+More sensible use of a λ is as arguments to _higher order functions_:
+
+```py
+reduce(lambda x, y: x+y, list, 0)
+```
