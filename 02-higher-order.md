@@ -6,25 +6,25 @@
 - Know the names of the common higher-order function abstractions.
 - Understand partial application and Currying.
 
-## Reduce
+## Map
 
 Starting from somewhere familiar.
-In Haskellish pseudocode:
+Haskellish pseudocode:
 
 ```
-reduce(f, [], accumulator) = accumulator
-reduce(f, [x], accumulator) = f(x, accumulator)
-reduce(f, [x] + rest_of_list, accumulator) = reduce(f, rest_of_list, f(x, accumulator))
+f: Function of one argument
+map(f, []) = []
+map(f, [x]) = [f(x)]
+map(f, [x] + rest_of_list) = [f(x)] + map(f, rest_of_list))
 ```
 
-An inefficient pseudoimplementation in Python:
+Here is an inefficient pseudoimplementation in Python:
 
-```python
-def reduce(f, li, accumulator):
+```py
+def map(f, li):
     if is_empty(li):
-        return accumulator
-    new_accumulator = f(li[0], accumulator)
-    return reduce(f, li[1:], new_accumulator)
+        return li
+    return [f(li[0])] + map(f, li[1:])
 ```
 
 Where a nice Pythonic way to check for an empty list is:
@@ -38,7 +38,63 @@ def is_empty(li):
 
 ```python
 T, R = TypeVar("T"), TypeVar("R")
-def reduce(f: Callable[[T, R] T], li: list[T], accumulator: R) -> R:
+def map(f: Callable[[T] R], li: list[T]) -> list[R]:
+    ...
+```
+
+</details>
+
+Though you're probably already familiar with `map`.
+It lives in the standard library! So you shouldn't redefine it!
+It takes a more generic `iterable` type (it's not restricted to `list`).
+
+> [!NOTE]
+> For non-Pythonistas, the builtin `map` doesn't return a list, but a more general `map object`. You can force this to become a list -- if you like.
+>
+> ```py
+> squares = map(lambda x: x**2, range(1,101))
+> print(type(squares))
+> squares = list(squares)
+> print(type(squares))
+> print(squares[:10])
+> ```
+
+### Quiz
+
+1. Is `map` a pure function?
+
+2.
+
+```python
+
+```
+
+## Reduce
+
+In Haskellish pseudocode:
+
+```
+f: Function of two arguments
+reduce(f, [], accumulator) = accumulator
+reduce(f, [x], accumulator) = f(x, accumulator)
+reduce(f, [x] + rest_of_list, accumulator) = reduce(f, rest_of_list, f(x, accumulator))
+```
+
+An inefficient pseudoimplementation in Python:
+
+```python
+def reduce(f, li, accumulator):
+    if not len(li):
+        return accumulator
+    new_accumulator = f(li[0], accumulator)
+    return reduce(f, li[1:], new_accumulator)
+```
+
+<details><summary>Type signature, if you like that sort of thing...</summary>
+
+```python
+T, R = TypeVar("T"), TypeVar("R")
+def reduce(f: Callable[[T, R] R], li: list[T], accumulator: R) -> R:
     ...
 ```
 
@@ -84,7 +140,7 @@ reduce(lambda l, x: l + [x] if f(x) else acc, list, [])
 <details>
 
 ```python
-def is_even(x: ):
+def is_even(x: int):
     return x % 2 == 0
 
 T = TypeVar("T")
@@ -97,35 +153,22 @@ print(filter(is_even, numbers))
 
 </details>
 
-## Map
+## Some other useful higher-order functions
 
-Haskellish pseudocode:
+### Flip
 
+Take the arguments and reverse them.
+
+```python
+def flip(f: Callable) -> Callable:
+    def new(*args):
+        return f(*args[::-1])
+    return new
 ```
-map(f, []) = []
-map(f, [x]) = [f(x)]
-map(f, [x] + rest_of_list) = [f(x)] + map(f, rest_of_list))
-```
-
-Python implementation:
 
 ```py
-def map(f, li):
-    if not len(li):
-        return li
-    return [f(li[0])] + map(f, li[1:])
+print(list(zip("Hello", [1,2,3,4,5])))
+print(list(flip(zip)("Hello", [1,2,3,4,5]))
 ```
-
-Though you're probably already familiar with `map` as it lives in the standard library.
-
-> [!NOTE]
-> For non-Pythonistas, the builtin `map` doesn't return a list, but a more general `map object`. You can force this to become a list -- if you like.
->
-> ```py
-> squares = map(lambda x: x**2, range(1,101))
-> print(type(squares))
-> squares = list(squares)
-> print(type(squares))
-> ```
 
 ## Partial application and Currying
