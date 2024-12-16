@@ -168,7 +168,7 @@ But for simplicity and readability, we don't do that.
 ### Side-effect free - side-effectful bridge
 
 Finally, in fully functional programming languages, there needs to be some way to affect change or handle a mutable state.
-We've just defined a nice predictable, inteligable set of restrictions.
+We've just defined a nice predictable, intelligible set of restrictions.
 But pure functions and immutable datastructures don't have a way to _do_ anything.
 
 So there should be some kind of bridge to _having an effect_.
