@@ -63,12 +63,6 @@ It takes a more generic `iterable` type (it's not restricted to `list`).
 
 1. Is `map` a pure function?
 
-2.
-
-```python
-
-```
-
 ## Reduce
 
 In Haskellish pseudocode:
@@ -102,7 +96,7 @@ def reduce(f: Callable[[T, R] R], li: list[T], accumulator: R) -> R:
 
 Different languages have conventions for the order of arguments.
 
-The standard python `reduce` function comes from `functools` (and is better than my toy implementation).
+The standard python `reduce` function comes from [the builtin `functools` library](https://docs.python.org/3/library/functools.html) (and is better than my toy implementation).
 
 ```python
 from functools import reduce
@@ -153,7 +147,66 @@ print(filter(is_even, numbers))
 
 </details>
 
+4.
+
+```python
+reduce(lambda l, x: l + [f(x)], li, [])
+```
+
+<details>
+
+```python
+T, R = TypeVar("T"), TypeVar("R")
+def map_via_reduce(f: Callable[[T], R], li: list[T]) -> list[R]:
+    return reduce(lambda l, x: l + [f(x)], li, [])
+
+squares = list(map(lambda x: x**2, [1, 2, 3, 4]))
+squares_via_reduce = map_via_reduce(lambda x: x**2, [1, 2, 3, 4])
+```
+
+</details>
+
+> [!NOTE]
+> This is a nice abstraction which we will revisit in a later lesson.
+
 ## Some other useful higher-order functions
+
+### Take / Head / Tail / Reverse
+
+In Python these functions are rather trivial but common in functional programming parlance:
+
+```python
+def take(n, li):
+    return li[:n]
+
+def head(li, n=5):
+    return take(n, li)
+```
+
+The only (very subtle) difference is that `head` typically takes the first `n`, whereas `take` _requires_ the `n`.
+
+There is also `tail`:
+
+```python
+def tail(li, n=5):
+    return take(n, reversed(li))
+```
+
+> [!NOTE]
+> We _deliberately_ have used `reversed` with no explaination.
+> In good functional style, we build functions from other functions. And a function definition should be understandable from the function names used internally.
+
+`reversed` is builtin in Python.
+Though -- as with `map` -- it doesn't return a `list` by default but a more general `reverseiterator`.
+You can force it to be a `list` if you need it, with:
+
+```python
+natural_numbers = list(range(1,11))
+print(type(reversed(natural_numbers)))
+
+countdown = list(reversed(natural_numbers))
+print(type(countdown))
+```
 
 ### Flip
 
@@ -168,7 +221,131 @@ def flip(f: Callable) -> Callable:
 
 ```py
 print(list(zip("Hello", [1,2,3,4,5])))
-print(list(flip(zip)("Hello", [1,2,3,4,5]))
+print(list(flip(zip)("Hello", [1,2,3,4,5])))
 ```
 
 ## Partial application and Currying
+
+Currying is named for [Haskell Curry](https://en.wikipedia.org/wiki/Haskell_Curry).
+It is very useful, though might not seem it at first.
+_To Curry_ a function of n arguments, is to create a chain of n functions each taking one argument.
+
+In Haskell, it is a built in feature of the syntax.
+In Python we don't have it by default.
+There are a number of ways to get there (or close to there).
+
+To explain, we're going to use the most pointless function:
+
+```python
+def add(x, y):
+    return x + y
+```
+
+Let's imagine we wanted (for some inexplicable reason) to add 2.
+
+```python
+def add2(y):
+    return add(2, x)
+```
+
+The silliness of this example is actually directly related to the idea of Currying.
+This approach doesn't scale, we're going to be defining loads of functions.
+
+_A_ way of doing this in Python is via a decorator.
+
+Unfortunately a Curry decorator isn't implemented in `functools` so we _could_ use a third-party library: `toolz`.
+(Toolz like's to add 'z's in place of 's'.)
+
+```python
+from functools import reduce # built into Python
+from toolz.functooz import curry # note the z
+```
+
+Here's what a Curry decorator looks like:
+
+```python
+# !pip install toolz
+
+from toolz.functoolz import curry
+
+@curry
+def add(x, y):
+    return x+y
+
+print(add(2))
+print(add(2)(3))
+```
+
+Something that _is_ builtin is the more general **partial application**.
+Partial application is Currying but where we are not limited to a chain of functions with one argument each, we can provide k arguments and we will obtain a function which takes n-k arguments.
+
+Consider a Currying a function with many arguments:
+
+```python
+@curry
+def add_many_numbers(a, b, c, d, e, f):
+    return a+b+c+d+e+f
+
+add_many_numbers(1)(2)(3)(4)(5)(6)
+```
+
+With partial application:
+
+```python
+from functools import partial
+
+add2 = partial(add_many_numbers, a=1, b=1)
+print(type(add2))
+```
+
+Currying or partial application, really comes into it's own when used in conjunction with, e.g. `map`:
+
+```python
+double_offset = list(map(partial(add, 2), list(range(1,11))))
+```
+
+Note that we've been defining the `add` function ourselves.
+But better is to use the [`operator` library that comes built into Python](https://docs.python.org/3/library/operator.html).
+
+```
+from operator import add, sub, pow, mul, truediv, floordiv
+```
+
+Or leave the namespace because `Namespaces are one honking great idea`.
+
+```python
+import operator
+from functools import partial
+
+double_offset = list(map(partial(operator.add, 2), list(range(1,11))))
+```
+
+We leave it to the student to decide whether using `partial` and `operator.add` is more readable than a `lambda` here:
+
+```python
+double_offset = list(map(lambda x: 2+x, list(range(1, 11))))
+```
+
+But for more complex functions or your own custom functions, bear `functools.partial` in mind!
+
+### Extra credit: our own `@curry` decorator
+
+If we wanted to avoid third-party-libaraies for some reason, it's relatively simple to make our own decorator for Currying using `functools.partial`.
+Here we leave the namespace for clarity:
+
+```python
+import functools
+
+def curry(f):
+    @functools.wraps(f)
+    def curried_f(*args, **kwargs):
+        return functools.partial(f, *args, **kwargs)
+    return curried_f
+
+
+@curry
+def add(a, b):
+    return a+b
+
+print(add(1)(2))
+```
