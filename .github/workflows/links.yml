@@ -16,7 +16,7 @@ jobs:
       - uses: lycheeverse/lychee-action@v2.1.0
         id: lychee
         with:
-          args: "--no-progress --verbose"
+          args: ". --no-progress --verbose"
           fail: true
           jobSummary: true
         env:
