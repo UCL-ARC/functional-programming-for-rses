@@ -1,26 +1,5 @@
 # The Functional Paradigm
 
-<!--
-
-# Programming paradigms
-
-- Procedural.
-  - Start, do step 1, do step 2, ... end.
-- Object orientated.
-  - Operations and data together.
-  - Nouns!
-- Functional...
-
----
-
-# Functions as first class citizen
-
-- "First class citizen" in CS parlance means "thing which is basic to the language, can be named (or not) and can be passed around."
-
----
-
--->
-
 ## Lesson objectives:
 
 - Thinking about OOP as a design choice.
@@ -42,7 +21,7 @@ E.g.
 > The API starts by establishing a connection to a database. It writes to the database when it receives a PUT request.
 
 In this example, there are several nouns which we might use to group our code.
-We might have an `WebAPI` class, we probably want a `Database` class -- or maybe even better a `DatabaseConnection` class.
+We might have a `WebAPI` class, we probably want a `Database` class -- or maybe even better a `DatabaseConnection` class.
 
 We usually have methods (processing code) that are the verbs we encounter.
 In the same example: we might have a `DatabaseConnection::open` method, and probably a `write()` method somewhere.
@@ -79,9 +58,9 @@ We could have made another decision, to write everything into global functions, 
 ## The functional paradigm
 
 Functional programming is often said to be a paradigm.
-It probably is, but for now consider it as an alternative to OOP.
+It probably is, but for now, consider it as an alternative to OOP.
 
-Let's think about a redesigning the OOP way of arranging code.
+Let's think about a redesign of the OOP way of arranging code.
 
 ![](assets/refactor-oop.svg)
 
@@ -117,14 +96,14 @@ And C++ would call that thing "a function".
 
 In formal mathematics:
 
-> A function is a relation between two sets $X$ and $Y$ which assigns each element of it's domain, $X$, to one and only one element of codomain $Y$.
+> A function is a relation between two sets $X$ and $Y$ which assigns each element of its domain, $X$, to one and only one element of codomain $Y$.
 >
 > $$
 > f : X \mapsto Y
 > $$
 
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Function_color_example_3.svg/1280px-Function_color_example_3.svg.png)
-By Function_color_example_3.gif: Wvbailey.The original uploader was Wvbailey at English Wikipedia.derivative work: Zerodamage - This file was derived from: Function color example 3.gif:, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=20802095
+> ![](https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Function_color_example_3.svg/1280px-Function_color_example_3.svg.png)
+> CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=20802095
 
 A trivial example (that is not spectacularly instructive):
 
@@ -134,7 +113,7 @@ $$
 
 relates every natural number to its square.
 
-Another way of defining a function instead of by formulae envolving the element is by specifying each relation:
+Another way of defining a function instead of by formulae involving the element is by specifying each relation:
 
 $$
 \delta : \mathbb R \mapsto \left\lbrace 0, 1\right\rbrace\\
@@ -157,15 +136,15 @@ A function cannot see anything but its domain (input arguments) and cannot do an
 - Environment variables?
 - File I/O?
 
-None of these things should have any affect on the function's output.
+None of these things should have any effect on the function's output.
 
-Hopefully you've noticed a slight issue here.
+Hopefully, you've noticed a slight issue here.
 
 ## Cornerstones of functional programming
 
 ### Pure functions
 
-The core, "first class citizen" in functional programming is this _pure_ function.
+The core, "first-class citizen" in functional programming is this _pure_ function.
 
 A function is pure if it takes input and gives output, and has no other effect, nor is affected by anything other than the inputs.
 
@@ -174,13 +153,32 @@ A function is pure if it takes input and gives output, and has no other effect, 
 
 ### Immutable data structures
 
-Another restruction we impose on ourselves if we want to be functional:
-All data structures should be immutable.
-Instead of changing data structures, instead we should make copies.
+Another restriction we impose on ourselves if we want to be functional:
+
+> All data structures are immutable.
+
+Instead of changing data structures, we should make copies.
+
+Hopefully, you've noticed another issue here.
+
+Pragmatically for these tutorials, since we are working in Python and the aim is to "be more functional" we can simply _treat_ datastructures as immutable.
+If we wanted to, we could use an external library, something like [`pyrsistent`](https://github.com/tobgu/pyrsistent/), to give "immutable versions" of all of the standard Python containers.
+But for simplicity and readability, we don't do that.
 
 ### Side-effect free - side-effectful bridge
 
-...
+Finally, in fully functional programming languages, there needs to be some way to affect change or handle a mutable state.
+We've just defined a nice predictable, inteligable set of restrictions.
+But pure functions and immutable datastructures don't have a way to _do_ anything.
+
+So there should be some kind of bridge to _having an effect_.
+
+In Haskell this is with an [_actions_ mechanism](https://wiki.haskell.org/Action).
+In Clojure this is with [_atoms_](https://clojure.org/reference/atoms), _agents_, and _actions_.
+
+More pragmatically, in Python, we don't really have to worry about this.
+Because Python (or Julia) doesn't impose pure functional style.
+We can simply separate the concerns: functional code into certain parts of the code, and effectful code into single responsible places.
 
 ## λ
 
@@ -220,7 +218,7 @@ def pow(x, p):
 ```
 
 Note that these are _good_ examples of λ functions (short, readable) but bad code examples because we've assigned them names.
-More sensible use of a λ is as arguments to _higher order functions_:
+More sensible use of a λ is as arguments to _higher-order functions_:
 
 ```py
 squares = map(lambda x: x**2, list)
