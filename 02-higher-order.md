@@ -193,7 +193,7 @@ def tail(li, n=5):
 ```
 
 > [!NOTE]
-> We _deliberately_ have used `reversed` with no explaination.
+> We _deliberately_ have used `reversed` with no explanation.
 > In good functional style, we build functions from other functions. And a function definition should be understandable from the function names used internally.
 
 `reversed` is builtin in Python.
@@ -228,7 +228,7 @@ print(list(flip(zip)("Hello", [1,2,3,4,5])))
 
 Currying is named for [Haskell Curry](https://en.wikipedia.org/wiki/Haskell_Curry).
 It is very useful, though might not seem it at first.
-_To Curry_ a function of n arguments, is to create a chain of n functions each taking one argument.
+_To Curry_ a function of n arguments is to create a chain of n functions each taking one argument.
 
 In Haskell, it is a built in feature of the syntax.
 In Python we don't have it by default.
@@ -253,18 +253,21 @@ This approach doesn't scale, we're going to be defining loads of functions.
 
 _A_ way of doing this in Python is via a decorator.
 
-Unfortunately a Curry decorator isn't implemented in `functools` so we _could_ use a third-party library: `toolz`.
-(Toolz like's to add 'z's in place of 's'.)
+Unfortunately, a Curry decorator isn't implemented in `functools` so we _could_ use a third-party library: [`toolz`](https://toolz.readthedocs.io/en/latest/).
 
-```python
-from functools import reduce # built into Python
-from toolz.functooz import curry # note the z
-```
+> [!NOTE]
+> Toolz likes to add 'z's in place of 's'.
+> So take care not to lose track of what's coming from where:
+>
+> ```python
+> from functools import reduce  # built into Python
+> from toolz.functooz import curry  # needs `pip install`ing and has a z
+> ```
 
 Here's what a Curry decorator looks like:
 
 ```python
-# !pip install toolz
+# ![uv] pip install toolz
 
 from toolz.functoolz import curry
 
@@ -307,7 +310,7 @@ double_offset = list(map(partial(add, 2), list(range(1,11))))
 Note that we've been defining the `add` function ourselves.
 But better is to use the [`operator` library that comes built into Python](https://docs.python.org/3/library/operator.html).
 
-```
+```python
 from operator import add, sub, pow, mul, truediv, floordiv
 ```
 
