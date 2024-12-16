@@ -19,5 +19,3 @@ jobs:
           args: ". --no-progress --verbose"
           fail: true
           jobSummary: true
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
