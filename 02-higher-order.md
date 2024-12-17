@@ -173,28 +173,25 @@ squares_via_reduce = map_via_reduce(lambda x: x**2, [1, 2, 3, 4])
 
 ### Take / Head / Tail / Reverse
 
-In Python these functions are rather trivial but common in functional programming parlance:
+In Python these functions are rather trivial but they're useful to define:
 
 ```python
 def take(n, li):
     return li[:n]
 
-def head(li, n=5):
-    return take(n, li)
+def head(li):
+    return li[0] if len(li) else None
 ```
 
-The only (very subtle) difference is that `head` typically takes the first `n`, whereas `take` _requires_ the `n`.
+> [!NOTE]
+> Slight difference here with what you might expect from unix `head` of a file, or `pandas.DataFrame.head`.
 
 There is also `tail`:
 
 ```python
-def tail(li, n=5):
-    return take(n, reversed(li))
+def tail(li):
+    return li[1:]
 ```
-
-> [!NOTE]
-> We _deliberately_ have used `reversed` with no explanation.
-> In good functional style, we build functions from other functions. And a function definition should be understandable from the function names used internally.
 
 `reversed` is builtin in Python.
 Though -- as with `map` -- it doesn't return a `list` by default but a more general `reverseiterator`.
