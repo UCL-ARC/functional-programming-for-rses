@@ -128,7 +128,7 @@ reduce(lambda a, b: a if a > b else b, list, 0)
 3.
 
 ```python
-reduce(lambda l, x: l + [x] if f(x) else acc, list, [])
+reduce(lambda l, x: l + [x] if f(x) else l, list, [])
 ```
 
 <details>
@@ -242,7 +242,7 @@ Let's imagine we wanted (for some inexplicable reason) to add 2.
 
 ```python
 def add2(y):
-    return add(2, x)
+    return add(2, y)
 ```
 
 The silliness of this example is actually directly related to the idea of Currying.
