@@ -70,8 +70,8 @@ In Haskellish pseudocode:
 ```
 f: Function of two arguments
 reduce(f, [], accumulator) = accumulator
-reduce(f, [x], accumulator) = f(x, accumulator)
-reduce(f, [x] + rest_of_list, accumulator) = reduce(f, rest_of_list, f(x, accumulator))
+reduce(f, [x], accumulator) = f(accumulator, x)
+reduce(f, [x] + rest_of_list, accumulator) = reduce(f, rest_of_list, f(accumulator, x))
 ```
 
 An inefficient pseudoimplementation in Python:
@@ -80,7 +80,7 @@ An inefficient pseudoimplementation in Python:
 def reduce(f, li, accumulator):
     if not len(li):
         return accumulator
-    new_accumulator = f(li[0], accumulator)
+    new_accumulator = f(accumulator, li[0])
     return reduce(f, li[1:], new_accumulator)
 ```
 
