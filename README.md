@@ -3,7 +3,7 @@
 ![](https://upload.wikimedia.org/wikipedia/commons/8/8f/Orange_lambda.svg)
 
 > [!NOTE]
-> Initially aimed internally at UCL-ARC RSEs and adjacent professions (data scientists, data stewards, ...).
+> Initially aimed internally at [ARC](https://ucl.ac.uk/arc) research software engineers and adjacent professions (data scientists, data stewards, ...).
 
 Following the Carpentries nomenclature, this is a lesson (estimated about 0.5 day taught material).
 Suggested episode order:
