@@ -1,6 +1,6 @@
 # Functional Programming for RSEs (and friends)
 
-![](https://upload.wikimedia.org/wikipedia/commons/8/8f/Orange_lambda.svg)
+![](assets/logo/λRSE.svg)
 
 > [!NOTE]
 > Initially aimed internally at [ARC](https://ucl.ac.uk/arc) research software engineers and adjacent professions (data scientists, data stewards, ...).
