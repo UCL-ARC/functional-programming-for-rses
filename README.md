@@ -14,3 +14,7 @@ Suggested episode order:
 1. [Functional problem solving exercises](./04-exercises.md)
 1. [Functors, Monads]()
 1. [Functional style, tips, and takehomes]()
+
+---
+
+[![CC-by-4.0](https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by.png)](https://creativecommons.org/licenses/by/4.0/)
