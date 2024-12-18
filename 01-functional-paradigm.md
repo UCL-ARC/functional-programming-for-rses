@@ -116,8 +116,12 @@ relates every natural number to its square.
 Another way of defining a function instead of by formulae involving the element is by specifying each relation:
 
 $$
-\delta : \mathbb R \mapsto \left\lbrace 0, 1\right\rbrace\\
-\delta(0) := 1\\
+\delta : \mathbb R \mapsto \left\lbrace 0, 1\right\rbrace
+$$
+$$
+\delta(0) := 1
+$$
+$$
 \delta(x) := 0\, \forall x \neq 0
 $$
 
