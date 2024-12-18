@@ -1,6 +1,10 @@
-# Functional Programming for RSEs (and friends)
+<center>
 
 ![](assets/logo/λRSE.svg)
+
+</center>
+
+# Functional Programming for RSEs (and friends)
 
 > [!NOTE]
 > Initially aimed internally at [ARC](https://ucl.ac.uk/arc) research software engineers and adjacent professions (data scientists, data stewards, ...).
