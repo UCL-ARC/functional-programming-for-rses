@@ -30,19 +30,18 @@ Here's the **same sentence**, but in Pythonic pseudocode:
 
 ```py
 class WebAPI:
-   def start(self):
-      self.db = DatabaseConnection()
-      self.db.open()
+    def start(self):
+        self.db = DatabaseConnection()
+        self.db.open()
 
-   def receive_PUT(self, data):
-      self.db.write(data)
+    def receive_PUT(self, data):
+        self.db.write(data)
+
 
 class DatabaseConnection:
-   def open():
-      ...
+    def open(): ...
 
-   def write():
-      ...
+    def write(): ...
 ```
 
 Here is a rough mindmap of the concepts of OOP stacked roughly in order of hierarchy:
@@ -108,7 +107,7 @@ In formal mathematics:
 A trivial example (that is not spectacularly instructive):
 
 $$
-y = f(x) := x^2; \,\, x\in \mathcal N
+y = f(x) := x^2; x\in \mathcal N
 $$
 
 relates every natural number to its square.
@@ -118,11 +117,13 @@ Another way of defining a function instead of by formulae involving the element 
 $$
 \delta : \mathbb R \mapsto \left\lbrace 0, 1\right\rbrace
 $$
+
 $$
 \delta(0) := 1
 $$
+
 $$
-\delta(x) := 0\, \forall x \neq 0
+\delta(x) := 0; \forall x \neq 0
 $$
 
 ### OK, great but what about coding?
@@ -215,10 +216,11 @@ Those are equivalent to:
 
 ```py
 def square(x):
-   return x**2
+    return x**2
+
 
 def pow(x, p):
-   return x**p
+    return x**p
 ```
 
 Note that these are _good_ examples of λ functions (short, readable) but bad code examples because we've assigned them names.

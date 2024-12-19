@@ -20,7 +20,7 @@ map(f, [x] + rest_of_list) = [f(x)] + map(f, rest_of_list))
 
 Here is an inefficient pseudoimplementation in Python:
 
-```py
+```python
 def map(f, li):
     if is_empty(li):
         return li
@@ -29,7 +29,7 @@ def map(f, li):
 
 Where a nice Pythonic way to check for an empty list is:
 
-```py
+```python
 def is_empty(li):
     return not len(li)
 ```
@@ -38,8 +38,9 @@ def is_empty(li):
 
 ```python
 T, R = TypeVar("T"), TypeVar("R")
-def map(f: Callable[[T] R], li: list[T]) -> list[R]:
-    ...
+
+
+def map(f: Callable[[T], R], li: list[T]) -> list[R]: ...
 ```
 
 </details>
@@ -88,8 +89,9 @@ def reduce(f, li, accumulator):
 
 ```python
 T, R = TypeVar("T"), TypeVar("R")
-def reduce(f: Callable[[T, R] R], li: list[T], accumulator: R) -> R:
-    ...
+
+
+def reduce(f: Callable[[T, R], R], li: list[T], accumulator: R) -> R: ...
 ```
 
 </details>
@@ -137,11 +139,15 @@ reduce(lambda l, x: l + [x] if f(x) else l, list, [])
 def is_even(x: int):
     return x % 2 == 0
 
+
 T = TypeVar("T")
+
+
 def filter(f: Callable[[T], bool], li: list[T]) -> list[T]:
     return reduce(lambda l, x: l + [x] if f(x) else acc, li, [])
 
-numbers = list(range(1,101))
+
+numbers = list(range(1, 101))
 print(filter(is_even, numbers))
 ```
 
@@ -157,8 +163,11 @@ reduce(lambda l, x: l + [f(x)], li, [])
 
 ```python
 T, R = TypeVar("T"), TypeVar("R")
+
+
 def map_via_reduce(f: Callable[[T], R], li: list[T]) -> list[R]:
     return reduce(lambda l, x: l + [f(x)], li, [])
+
 
 squares = list(map(lambda x: x**2, [1, 2, 3, 4]))
 squares_via_reduce = map_via_reduce(lambda x: x**2, [1, 2, 3, 4])
@@ -179,6 +188,7 @@ In Python these functions are rather trivial but they're useful to define:
 def take(n, li):
     return li[:n]
 
+
 def head(li):
     return li[0] if len(li) else None
 ```
@@ -198,7 +208,7 @@ Though -- as with `map` -- it doesn't return a `list` by default but a more gene
 You can force it to be a `list` if you need it, with:
 
 ```python
-natural_numbers = list(range(1,11))
+natural_numbers = list(range(1, 11))
 print(type(reversed(natural_numbers)))
 
 countdown = list(reversed(natural_numbers))
@@ -213,12 +223,13 @@ Take the arguments and reverse them.
 def flip(f: Callable) -> Callable:
     def new(*args):
         return f(*args[::-1])
+
     return new
 ```
 
 ```py
-print(list(zip("Hello", [1,2,3,4,5])))
-print(list(flip(zip)("Hello", [1,2,3,4,5])))
+print(list(zip("Hello", [1, 2, 3, 4, 5])))
+print(list(flip(zip)("Hello", [1, 2, 3, 4, 5])))
 ```
 
 ## Partial application and Currying
@@ -268,9 +279,11 @@ Here's what a Curry decorator looks like:
 
 from toolz.functoolz import curry
 
+
 @curry
 def add(x, y):
-    return x+y
+    return x + y
+
 
 print(add(2))
 print(add(2)(3))
@@ -284,7 +297,8 @@ Consider a Currying a function with many arguments:
 ```python
 @curry
 def add_many_numbers(a, b, c, d, e, f):
-    return a+b+c+d+e+f
+    return a + b + c + d + e + f
+
 
 add_many_numbers(1)(2)(3)(4)(5)(6)
 ```
@@ -301,7 +315,7 @@ print(type(add2))
 Currying or partial application, really comes into it's own when used in conjunction with, e.g. `map`:
 
 ```python
-double_offset = list(map(partial(add, 2), list(range(1,11))))
+double_offset = list(map(partial(add, 2), list(range(1, 11))))
 ```
 
 Note that we've been defining the `add` function ourselves.
@@ -317,13 +331,13 @@ Or leave the namespace because `Namespaces are one honking great idea`.
 import operator
 from functools import partial
 
-double_offset = list(map(partial(operator.add, 2), list(range(1,11))))
+double_offset = list(map(partial(operator.add, 2), list(range(1, 11))))
 ```
 
 We leave it to the student to decide whether using `partial` and `operator.add` is more readable than a `lambda` here:
 
 ```python
-double_offset = list(map(lambda x: 2+x, list(range(1, 11))))
+double_offset = list(map(lambda x: 2 + x, list(range(1, 11))))
 ```
 
 But for more complex functions or your own custom functions, bear `functools.partial` in mind!
@@ -336,16 +350,19 @@ Here we leave the namespace for clarity:
 ```python
 import functools
 
+
 def curry(f):
     @functools.wraps(f)
     def curried_f(*args, **kwargs):
         return functools.partial(f, *args, **kwargs)
+
     return curried_f
 
 
 @curry
 def add(a, b):
-    return a+b
+    return a + b
+
 
 print(add(1)(2))
 ```

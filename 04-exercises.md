@@ -24,6 +24,7 @@ def luhn_ok(i: int) -> bool:
     # your code here
     pass
 
+
 def test_luhn():
     assert luhn_ok(4012888888881881)
     assert not luhn_ok(4012888888881881)
@@ -32,14 +33,13 @@ def test_luhn():
 <details><summary>Click for a hint...</summary>
 
 ```python
-
 def to_digits(i: int) -> list[int]:
     """Convert a large number i into a list of it's digits."""
     pass
 
 
 def test_to_digits():
-    assert to_digits(1234567) = [1, 2, 3, 4, 5, 6, 7]
+    assert to_digits(1234567) == [1, 2, 3, 4, 5, 6, 7]
 
 
 def double_every_other(li: list[int]) -> list[int]:
@@ -48,8 +48,7 @@ def double_every_other(li: list[int]) -> list[int]:
 
 
 def test_double_every_other():
-    assert double_every_other([1, 2, 3, 4]) = [1, 4, 3, 8]
-
+    assert double_every_other([1, 2, 3, 4]) == [1, 4, 3, 8]
 ```
 
 </details>
